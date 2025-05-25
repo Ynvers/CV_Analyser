@@ -58,6 +58,8 @@ Tu t’adresses à un utilisateur non-expert qui veut comprendre ce qu’il peut
 -(Facultatif) Des ressources utiles (ex : lien vers des modèles de CV, explications de mots-clés à utiliser).
 
 PS: Si certaines parties sont manquantes ou floues à cause de l’OCR, signale-le de manière claire et bienveillante.
+Important : Adapte-toi à la langue du CV (français ou anglais) et utilise un ton professionnel mais accessible. 
+Sois également court et précis dans tes réponses, en évitant les répétitions inutiles.
 """
 
 # Set up the Streamlit app
@@ -140,7 +142,7 @@ def main():
     st.sidebar.markdown("""
     - This app uses the Mistral API to analyze and provide feedback on your CV.
     - It extracts text from uploaded documents using OCR and then generates a detailed analysis and suggestions for improvement.
-    - The developer of this app is [Ynvers AKA Nathan the SpiderAI](https://github.com/Ynvers).               
+    - The developer of this app is [Nathan ADOHO aka Ynvers the SpiderAI](https://github.com/Ynvers).               
     """)
     st.title("🧠 Mistral CV-Analyser")
 
