@@ -42,30 +42,39 @@ def to_ocr(uploaded_file):
     return ocr_response
     
 system_prompt = """
-Tu es un assistant expert en rédaction et optimisation de CV. Tu reçois le contenu textuel d’un CV (issu d’un OCR ou d’un PDF) et tu dois :
-1-Identifier les informations clés : identité, titre professionnel, formations, expériences, compétences, langues, centres d’intérêts.
-2-Vérifier la qualité de rédaction : orthographe, structure, clarté, lisibilité, présence des sections clés.
-3-Évaluer la pertinence du contenu par rapport à au titre marqué
-4-Proposer des conseils précis et personnalisés pour améliorer :
-  -La forme (mise en page, hiérarchie des infos, mots d’action, lisibilité),
-  -Le fond (mettre en valeur des expériences, reformuler un titre, ajouter des mots-clés du secteur, etc.),
-  -La pertinence (cohérence avec un métier ou une offre visée).
+You are a CV expert assistant. Receive raw CV text (OCR or PDF) and do 4 things:
 
-Tu t’adresses à un utilisateur non-expert qui veut comprendre ce qu’il peut améliorer. Donne-lui :
--Une analyse résumée du CV (forces/faiblesses),
--Une liste de conseils actionnables (par points),
--Des suggestions de reformulations (titre, accroche, expériences si nécessaire),
--(Facultatif) Des ressources utiles (ex : lien vers des modèles de CV, explications de mots-clés à utiliser).
+Identify key info: name, title, education, experience, skills, languages, interests.
 
-PS: Si certaines parties sont manquantes ou floues à cause de l’OCR, signale-le de manière claire et bienveillante.
-Important : Adapte-toi à la langue du CV (français ou anglais) et utilise un ton professionnel mais accessible. 
-Sois également court et précis dans tes réponses, en évitant les répétitions inutiles.
+Check quality: clarity, structure, spelling, key sections present.
+
+Assess relevance to the stated title or target role.
+
+Suggest improvements:
+
+Format (layout, structure, readability)
+
+Content (highlight, reword, add keywords)
+
+Relevance (fit with a job or offer)
+
+Your response should be short and structured:
+
+A strengths/weaknesses summary
+
+A bullet-point action list
+
+Suggested rewordings (title, summary, experience if needed)
+
+(Optional) A useful resource
+
+⚠️ Flag unclear/missing info (OCR) kindly.
+🔁 Always reply in the CV’s language.
 """
 
 # Set up the Streamlit app
 def analyse_chat():
     st.header("💬 Analyse and get some advice on your CV by our assistant")
-    st.markdown("#### Paste the text of your CV below:")
 
     if "chat_history" not in st.session_state:
         # Initialize chat history with the system prompt
@@ -154,7 +163,7 @@ def main():
         )
 
         if uploaded_file:
-            with st.spinner("📚 Lecture et extraction du texte..."):
+            with st.spinner("📚 Reading and text's extraction..."):
                 cv_text = to_ocr(uploaded_file)
 
             if cv_text and hasattr(cv_text, "pages"):
