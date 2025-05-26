@@ -29,17 +29,29 @@ def encode_file_from_stream(uploaded_file):
         return None
 
 def to_ocr(uploaded_file):
-    base64_pdf = encode_file_from_stream(uploaded_file)
-    
-    ocr_response = client.ocr.process(
-        model="mistral-ocr-latest",
-        document={
-            "type": "document_url",
-            "document_url": f"data:application/pdf;base64,{base64_pdf}" 
-        },
-        include_image_base64=True
-    )
-    return ocr_response
+    """Process document for OCR, converting images to PDF if necessary."""
+    try:
+        # Check file type
+        file_type = uploaded_file.type
+        if file_type == "application/pdf":
+            base64_pdf = encode_file_from_stream(uploaded_file)
+        else:
+            st.error("⚠️ Currently, only PDF files are supported. Please convert your image to PDF format first.")
+            st.info("💡 You can use online tools or your computer's PDF printer to convert your image to PDF.")
+            return None
+        
+        ocr_response = client.ocr.process(
+            model="mistral-ocr-latest",
+            document={
+                "type": "document_url",
+                "document_url": f"data:application/pdf;base64,{base64_pdf}" 
+            },
+            include_image_base64=True
+        )
+        return ocr_response
+    except Exception as e:
+        st.error(f"⚠️ Error processing document: {str(e)}")
+        return None
     
 system_prompt = """
 You are a CV expert assistant. Receive raw CV text (OCR or PDF) and do 4 things:
